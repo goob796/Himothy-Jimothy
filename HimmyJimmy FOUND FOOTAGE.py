@@ -1,65 +1,101 @@
 #Team project. Antonio Lucky Ducky
 import random
+
 def main():
-    #accepts no aguements
-    #calls all functions to play the number of games specified
-    another = 'y'
-    while another == 'y':
-        nums = first_roll()
-        output_dice(nums)
-        
-        another = input('Play another game? (y/n)')
+    # plays a single game
+
+    print('Starting Game')
+
+    nums = first_roll()
+    rolls = 1
+    output_dice(nums, rolls)
+
+    # keep rolling until all dice are the same
+    while True:
+        same = True
+        first = nums[0]
+        for num in nums:
+            if num != first:
+                same = False
+
+        if same:
+            break
+
+        nums = reroll_many(nums)
+        rolls += 1
+        output_dice(nums, rolls)
+
+    print('Game completed in', rolls, 'rolls')
+
+def output_dice(nums, roll_number):
     
-def output_dice(nums):
-    #accepts dice
-    #outputs each die in the list
-    print('-----Roll #',total,'-----')
-    for num in range(1,12+1):
-        print('Die\t',num,':', nums[num-1])
+    print('\nRoll #', roll_number)
+    print('---------------------')
+    for i in range(len(nums)):
+        print('Die', i + 1, ':', nums[i])
+
 
 def roll_die():
-    #accepts no arguements
-    #returns a random integer from 1 to 6
-    Roll = random.randint(1,6)
-    return Roll
+    # accepts no arguments
+    # returns a random integer from 1 to 6
+    return random.randint(1, 6)
+
 
 def first_roll():
-    #accepts no arguements
-    #uses roll_die to generate a list of 6 integers
-    #returns a list of 6 random integers
+    # accepts no arguments
+    # uses roll_die to generate a list of 12 integers
     nums = []
-    total1 = 0
-    while total1 < 12:
-        num = roll_die()
-        total1 += 1
-        nums.append(num)
+    total = 0
+    while total < 12:
+        nums.append(roll_die())
+        total += 1
     return nums
 
+
 def count_frequency(nums, die):
-    #accepts a list of 6 random integers and a target die
-    #returns how often that target die occurs in the list
-    pass
+    # accepts a list of dice and a target die
+    # returns how often the target die occurs
+    count = 0
+    for num in nums:
+        if num == die:
+            count += 1
+    return count
+
 
 def find_mode(nums):
-    #accepts a list of dice.
-    #uses count_frequency(dice, die) to determine how often each die occurs.
-    #returns the mode
-    pass
+    # accepts a list of dice
+    # returns the most common die value
+    highest = 0
+    mode = nums[0]
+
+    for die in range(1, 7):
+        freq = count_frequency(nums, die)
+        if freq > highest:
+            highest = freq
+            mode = die
+    return mode
+
 
 def list_unmatched_dice(nums):
-    #accepts a list of dice.
-    #determines which dice need rerolled
-    #returns a list of indexes to reroll
-    pass
+    
+    mode = find_mode(nums)
+    indexes = []
+
+    for i in range(len(nums)):
+        if nums[i] != mode:
+            indexes.append(i)
+    return indexes
+
 
 def reroll_one(nums, index):
-    #accepts a list of dice and an index.
-    #uses roll_die to reroll that index
-    #returns a new list with that index rerolled
-    pass
+    
+    nums[index] = roll_die()
+    return nums
+
 
 def reroll_many(nums):
-    #accepts a list of dice
-    #calls list_unmatched_dice() and reroll_one() to reroll each die != the mode.
-    #returns a list of rerolled dice.
-    pass
+    
+    indexes = list_unmatched_dice(nums)
+    for index in indexes:
+        nums = reroll_one(nums, index)
+    return nums
