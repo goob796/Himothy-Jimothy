@@ -1,7 +1,9 @@
-#Team project. Antonio Lucky Ducky
+#Team project. Antonio Lucky Ducky.
 import random
 
 def main():
+    #accepts no arguements
+    #calls all functions to play the number of games specified
     # plays a single game
 
     print('Starting Game')
@@ -28,6 +30,8 @@ def main():
     print('Game completed in', rolls, 'rolls')
 
 def output_dice(nums, roll_number):
+    #accepts dice
+    #outputs each die in the list
     
     print('\nRoll #', roll_number)
     print('---------------------')
@@ -44,6 +48,7 @@ def roll_die():
 def first_roll():
     # accepts no arguments
     # uses roll_die to generate a list of 12 integers
+    #returns a list of 12 random integers
     nums = []
     total = 0
     while total < 12:
@@ -64,6 +69,7 @@ def count_frequency(nums, die):
 
 def find_mode(nums):
     # accepts a list of dice
+    #uses count_frequency(dice, die) to determine how often each die occurs
     # returns the most common die value
     highest = 0
     mode = nums[0]
@@ -77,6 +83,9 @@ def find_mode(nums):
 
 
 def list_unmatched_dice(nums):
+    #accepts a list of dice
+    #determines whoch dice need rerolled
+    #Retunrs a new list of indexes to reroll
     
     mode = find_mode(nums)
     indexes = []
@@ -88,12 +97,18 @@ def list_unmatched_dice(nums):
 
 
 def reroll_one(nums, index):
+    #accepts a list of dice and an index
+    #uses roll_die to reroll that index
+    #returns a new list with that index rerolled
     
     nums[index] = roll_die()
     return nums
 
 
 def reroll_many(nums):
+    #accepts a list of dice
+    #calls list_unmathced_dice() and reroll_one() to reroll each die != the mode
+    #returns a list of reolled dice
     
     indexes = list_unmatched_dice(nums)
     for index in indexes:
